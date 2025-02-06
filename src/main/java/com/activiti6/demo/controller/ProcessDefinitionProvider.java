@@ -31,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -107,7 +106,7 @@ public class ProcessDefinitionProvider  {
      */
     @PostMapping(value = "/startProcessInstance")
     @ApiOperation(value = "开始流程", notes = "开始流程")
-    public R startProcessInstance(@RequestBody @Validated @ApiParam(value = "开始流程请求对象") @Valid StartProcessInstanceReq startProcessInstanceReq) {
+    public R startProcessInstance(@RequestBody @ApiParam(value = "开始流程请求对象") @Validated StartProcessInstanceReq startProcessInstanceReq) {
         try {
             Map<String, Object> variables = startProcessInstanceReq.getVariables();//流程配置参数
             variables.put("applyUserId", startProcessInstanceReq.getApplyUserId());//流程发起人
@@ -125,7 +124,7 @@ public class ProcessDefinitionProvider  {
      */
     @PostMapping(value = "/queryProcessInstance")
     @ApiOperation(value = "通过key获取流程定义明细列表", notes = "通过key获取流程定义明细列表")
-    public R processDefinitionQuery(@RequestBody @ApiParam(value = "获取流程定义明细请求对象") @Valid QueryProcessInstanceReq queryProcessInstanceReq) {
+    public R processDefinitionQuery(@RequestBody @ApiParam(value = "获取流程定义明细请求对象") @Validated QueryProcessInstanceReq queryProcessInstanceReq) {
         try {
             List<ProcessDefinition> list = activitiService.processDefinitionQuery(queryProcessInstanceReq.getInstanceKey());
             return R.ok().put("list", list);
@@ -137,7 +136,7 @@ public class ProcessDefinitionProvider  {
 
     @PostMapping(value = "/isFinishProcess")
     @ApiOperation(value = "流程是否结束", notes = "流程是否结束")
-    public R isFinishProcess(@RequestBody @ApiParam(value = "流程是否结束请求对象") @Valid IsFinishProcessReq isFinishProcessReq) {
+    public R isFinishProcess(@RequestBody @ApiParam(value = "流程是否结束请求对象") @Validated IsFinishProcessReq isFinishProcessReq) {
         boolean flag = activitiService.isFinishProcess(isFinishProcessReq.getProcessInstanceId());
         return R.ok().put("isFinish", flag);
     }
@@ -151,7 +150,7 @@ public class ProcessDefinitionProvider  {
      */
     @PostMapping(value = "/viewProcessInstanceImage")
     @ApiOperation(value = "显示流程实例处理状态图片", notes = "显示流程实例处理状态图片")
-    public void viewProcessInstanceImage(HttpServletRequest request, HttpServletResponse response, @RequestBody @ApiParam(value = "流程实例处理状态请求对象") @Valid ViewProcessInstanceImageReq viewProcessInstanceImageReq) {
+    public void viewProcessInstanceImage(HttpServletRequest request, HttpServletResponse response, @RequestBody @ApiParam(value = "流程实例处理状态请求对象") @Validated ViewProcessInstanceImageReq viewProcessInstanceImageReq) {
         //logger.info("[开始]-获取流程图图像");
         try {
             //  获取历史流程实例

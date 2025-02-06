@@ -14,12 +14,12 @@ import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 /**
  * @Auther: Allen
@@ -45,7 +45,7 @@ public class FlowUserProvider{
      */
     @PostMapping(value = "/newGroup")
     @ApiOperation(value = "新增用户组", notes = "新增用户组")
-    public R newGroup(@RequestBody @ApiParam(value = "新增用户组请求") @Valid GroupReq groupReq) {
+    public R newGroup(@RequestBody @ApiParam(value = "新增用户组请求") @Validated GroupReq groupReq) {
         try {
 
             if (StringUtils.isBlank(groupReq.getName())) {
@@ -73,7 +73,7 @@ public class FlowUserProvider{
 
     @PostMapping(value = "/deleteGroup")
     @ApiOperation(value = "删除用户组", notes = "删除用户组")
-    public R deleteGroup(@RequestBody @ApiParam(value = "新增用户组ID") @Valid GroupReq groupReq) {
+    public R deleteGroup(@RequestBody @ApiParam(value = "新增用户组ID") @Validated GroupReq groupReq) {
         try {
             identityService.deleteGroup(groupReq.getId());
             return R.ok();
@@ -84,7 +84,7 @@ public class FlowUserProvider{
 
     @PostMapping(value = "/newUser")
     @ApiOperation(value = "新增用户", notes = "新增用户")
-    public R newUser(@RequestBody @ApiParam(value = "新增用户请求对象") @Valid UserReq userReq) {
+    public R newUser(@RequestBody @ApiParam(value = "新增用户请求对象") @Validated UserReq userReq) {
         try {
 
 
@@ -110,7 +110,7 @@ public class FlowUserProvider{
 
     @PostMapping(value = "/deleteUser")
     @ApiOperation(value = "删除用户", notes = "删除用户")
-    public R deleteUser(@RequestBody @ApiParam(value = "删除用户请求对象") @Valid UserReq userReq) {
+    public R deleteUser(@RequestBody @ApiParam(value = "删除用户请求对象") @Validated UserReq userReq) {
         try {
             identityService.deleteUser(userReq.getId());
             return R.ok();
@@ -121,7 +121,7 @@ public class FlowUserProvider{
 
     @PostMapping(value = "/createMembership")
     @ApiOperation(value = "新增用户与组关联", notes = "新增用户与组关联")
-    public R createMembership(@RequestBody @ApiParam(value = "用户与组关联请求对象") @Valid MembershipReq membershipReq) {
+    public R createMembership(@RequestBody @ApiParam(value = "用户与组关联请求对象") @Validated MembershipReq membershipReq) {
         try {
 
             User userInDb = identityService.createUserQuery().userId(membershipReq.getUserId()).singleResult();
@@ -150,7 +150,7 @@ public class FlowUserProvider{
 
     @PostMapping(value = "/deleteMembership")
     @ApiOperation(value = "删除用户与组关联", notes = "删除用户与组关联")
-    public R deleteMembership(@RequestBody @ApiParam(value = "用户与组关联请求对象") @Valid MembershipReq membershipReq) {
+    public R deleteMembership(@RequestBody @ApiParam(value = "用户与组关联请求对象") @Validated MembershipReq membershipReq) {
         try {
             identityService.deleteMembership(membershipReq.getUserId(), membershipReq.getGroupId());
             return R.ok();

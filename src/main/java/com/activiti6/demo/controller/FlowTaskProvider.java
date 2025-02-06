@@ -7,14 +7,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class FlowTaskProvider{
 
     @PostMapping(value = "/queryWaitTask")
     @ApiOperation(value = "查询待办任务", notes = "查询待办任务")
-    public R queryWaitTask(@RequestBody @ApiParam(value = "查询任务请求对象") @Valid QueryWaitTaskReq queryWaitTaskReq) {
+    public R queryWaitTask(@RequestBody @ApiParam(value = "查询任务请求对象") @Validated QueryWaitTaskReq queryWaitTaskReq) {
         List list = activitiService.queryWaitTask(queryWaitTaskReq.getFirstResult(), queryWaitTaskReq.getMaxResults());
         return R.ok().put("list", list);
     }
@@ -55,7 +55,7 @@ public class FlowTaskProvider{
 
     @PostMapping(value = "/queryTask")
     @ApiOperation(value = "查询任务", notes = "查询任务")
-    public R queryTask(@RequestBody @ApiParam(value = "查询任务请求对象") @Valid QueryTaskReq queryTaskReq) {
+    public R queryTask(@RequestBody @ApiParam(value = "查询任务请求对象") @Validated QueryTaskReq queryTaskReq) {
         try {
             List list = activitiService.queryTask(queryTaskReq.getAssignee(), queryTaskReq.getCandidateUser(), queryTaskReq.getCandidateGroup(), queryTaskReq.getFirstResult(), queryTaskReq.getMaxResults());
             return R.ok().put("list", list);
@@ -72,7 +72,7 @@ public class FlowTaskProvider{
      */
     @PostMapping(value = "/completeTask")
     @ApiOperation(value = "审核任务", notes = "审核任务")
-    public R completeTask(@RequestBody @ApiParam(value = "审核任务请求对象") @Valid CompleteTaskReq completeTaskReq) {
+    public R completeTask(@RequestBody @ApiParam(value = "审核任务请求对象") @Validated CompleteTaskReq completeTaskReq) {
         try {
             if (StringUtils.isBlank(completeTaskReq.getAssignee())) {//审核人不能为空
                 return R.error(-1, "审核人不能为空");
@@ -104,7 +104,7 @@ public class FlowTaskProvider{
 
     @PostMapping(value = "/deleteTask")
     @ApiOperation(value = "删除任务", notes = "删除任务")
-    public R deleteTask(@RequestBody @ApiParam(value = "删除任务求对象") @Valid DeleteTaskReq deleteTaskReq) {
+    public R deleteTask(@RequestBody @ApiParam(value = "删除任务求对象") @Validated DeleteTaskReq deleteTaskReq) {
         try {
             activitiService.deleteTask(deleteTaskReq.getTaskId());
             return R.ok();
@@ -120,7 +120,7 @@ public class FlowTaskProvider{
      */
     @ApiOperation(value = "任务指派", notes = "任务指派")
     @PostMapping(value = "/claimTask")
-    public R claimTask(@RequestBody @ApiParam(value = "指派任务求对象") @Valid ClaimTaskReq claimTaskReq) {
+    public R claimTask(@RequestBody @ApiParam(value = "指派任务求对象") @Validated ClaimTaskReq claimTaskReq) {
         try {
             activitiService.claimTask(claimTaskReq.getTaskId(), claimTaskReq.getAssignee());
             return R.ok();
