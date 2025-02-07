@@ -1,5 +1,6 @@
 package com.activiti6.demo.vo;
 
+import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
